@@ -70,7 +70,7 @@ MySQL：			 8.0.22
 
 ### 数据流图
 
-![image-20231214134623339](https://github.com/sfssa/k-line/tree/master/staticdata01.png)
+![image-20230904150524113](https://github.com/sfssa/k-line/tree/master/static/data01.png)
 
 ### 获取数据
 
