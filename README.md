@@ -46,7 +46,7 @@ MySQL：			 8.0.22
 
 #### 函数说明
 
-- 测试MySQL是否连接成功：`bool testConnection();`
+- 测试MySQL是否连接成功：`bool init();`
 - 建立`instid`品种的数据库表：`bool createTable(const std::string& instid);`
 - 将获得的历史行情数据插入到数据库中：`bool insertHistoricalMarketData`
 - 将数据库中的行情数据加载到内存中：`bool loadHistoricalData(const std::string& instid);`

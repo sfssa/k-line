@@ -26,10 +26,18 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    databasehandler.cpp \
+    utils.cpp \
+    data.cpp \
+    klinedrawer.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    databasehandler.h \
+    utils.h \
+    data.h \
+    klinedrawer.h
 
 FORMS += \
         mainwindow.ui
