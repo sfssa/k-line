@@ -12,4 +12,5 @@
 std::string timestmapToReadableTime(uint64_t timestmap);
 // 解析获得的历史数据
 void parse(std::vector<MarketData>& arr);
+
 #endif // UTILS_H

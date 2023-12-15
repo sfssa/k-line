@@ -22,7 +22,7 @@ bool DatabaseHandler::init()
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName("localhost");
     db.setPort(3306);
-    db.setDatabaseName("kline");
+    db.setDatabaseName("mt4");
     db.setUserName("root");
     db.setPassword("panzhixin");
     bool ok = db.open();
@@ -56,5 +56,26 @@ bool DatabaseHandler::createTable(const QString &instid)
     }else{
         qDebug() << "error creating table: " << query.lastError().text();
         return false;
+    }
+}
+
+void DatabaseHandler::getAUDHUFHistoryData(std::vector<AUDHUF> &arr)
+{
+    QSqlQuery query;
+    // 提前预留空间
+    arr.reserve(1024);
+    QString queryString = "SELECT * FROM audhuf";
+    if (query.exec(queryString)) {
+        while (query.next()) {
+            AUDHUF temp;
+            temp.timestamp = query.value("time").toString();
+            temp.high = query.value("high").toFloat();
+            temp.open = query.value("open").toFloat();
+            temp.close = query.value("close").toFloat();
+            temp.low = query.value("low").toFloat();
+            arr.emplace_back(temp);
+        }
+    } else {
+        qDebug() << "Query failed:" << query.lastError().text();
     }
 }
