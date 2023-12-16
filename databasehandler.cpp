@@ -19,20 +19,14 @@ DatabaseHandler::DatabaseHandler()
 
 bool DatabaseHandler::init()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName("localhost");
-    db.setPort(3306);
-    db.setDatabaseName("mt4");
-    db.setUserName("root");
-    db.setPassword("panzhixin");
-    bool ok = db.open();
-    if (ok){
-        qDebug() << "connection to mysql successfully";
-        return true;
-    }
-    else {
-        qDebug() << "failed to connection to mysql" << db.lastError().text();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName("kline.sqlite");
+
+    if (!db.open()) {
+        qDebug() << "connect sqlite3 failed";
         return false;
+    }else{
+        qDebug() << "connect sqlite3 successfully";
     }
 }
 
@@ -45,11 +39,11 @@ bool DatabaseHandler::createTable(const QString &instid)
                                            "h double,"
                                            "l double,"
                                            "c double,"
-                                           "vol decimal(16,9),"
-                                           "volCcy decimal(16,9),"
-                                           "volCCyQuote decimal(16,9),"
-                                           "confirm decimal(16,9))").arg(instid);
-    qDebug() << createTableQuery;
+                                           "vol varchar(64),"
+                                           "volCcy varchar(64),"
+                                           "volCCyQuote varchar(64),"
+                                           "confirm int)").arg(instid);
+    // qDebug() << createTableQuery;
     if(query.exec(createTableQuery)){
         qDebug() << "table created successfully";
         return true;

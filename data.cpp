@@ -27,7 +27,9 @@ void Data::requestHistoricalData()
 
 bool Data::parse(QString& data)
 {
-    qDebug() << "-------------------------------";
+    // qDebug() << "-------------------------------";
+    QVector<MarketData> arr;
+    arr.reserve(100);
     // 解析
     int cur = 0;
     while(data[cur] != '['){
@@ -41,15 +43,14 @@ bool Data::parse(QString& data)
         while(true){
             begin = cur;
             end = cur + 1;
-            // QVector<QString> arr;
-            // arr.reserve(100);
+            MarketData temp;
             // 解析时间戳
             QString timestamp;
             while(data[end] != '\"'){
                 ++end;
             }
             timestamp = data.mid(begin + 1, end - begin -1);
-            qDebug() << timestamp;
+            temp.timestamp = timestamp;
             // 解析开盘价
             QString openPrice;
             begin = end + 2;
@@ -58,8 +59,7 @@ bool Data::parse(QString& data)
                 ++end;
             }
             openPrice = data.mid(begin + 1, end - begin - 1);
-            qDebug() << openPrice;
-
+            temp.open = openPrice.toDouble();
             // 解析最高价
             QString highPrice;
             begin = end + 2;
@@ -68,8 +68,7 @@ bool Data::parse(QString& data)
                 ++end;
             }
             highPrice = data.mid(begin + 1, end - begin - 1);
-            qDebug() << highPrice;
-
+            temp.high = highPrice.toDouble();
             // 解析最低价
             QString lowPrice;
             begin = end + 2;
@@ -78,8 +77,7 @@ bool Data::parse(QString& data)
                 ++end;
             }
             lowPrice = data.mid(begin + 1, end - begin - 1);
-            qDebug() << lowPrice;
-
+            temp.low = lowPrice.toDouble();
             // 解析收盘价
             QString closePrice;
             begin = end + 2;
@@ -88,8 +86,7 @@ bool Data::parse(QString& data)
                 ++end;
             }
             closePrice = data.mid(begin + 1, end - begin - 1);
-            qDebug() << closePrice;
-
+            temp.close = closePrice.toDouble();
             // 交易量（张）
             QString vol;
             begin = end + 2;
@@ -97,9 +94,9 @@ bool Data::parse(QString& data)
             while(data[end] != '\"'){
                 ++end;
             }
-            vol = data.mid(begin + 1, end - begin - 1);
-            qDebug() << vol;
 
+            vol = data.mid(begin + 1, end - begin - 1);
+            temp.volume = vol;
             // 交易量（币）
             QString volCcy;
             begin = end + 2;
@@ -108,8 +105,7 @@ bool Data::parse(QString& data)
                 ++end;
             }
             volCcy = data.mid(begin + 1, end - begin - 1);
-            qDebug() << volCcy;
-
+            temp.volCcy = volCcy;
             // 交易量（计价货币）
             QString volCcyQuote;
             begin = end + 2;
@@ -118,8 +114,8 @@ bool Data::parse(QString& data)
                 ++end;
             }
             volCcyQuote = data.mid(begin + 1, end - begin - 1);
-            qDebug() << volCcyQuote;
-
+            temp.volCcyQuote = volCcyQuote;
+            arr.push_back(temp);
             // 解析下一个还是结束解析
             cur = end + 5;
             if(data[cur + 1] == ','){
@@ -129,6 +125,7 @@ bool Data::parse(QString& data)
                 break;
             }
         }
+        // showAllData(arr);
     }else{
         qDebug() << "error in parse function";
         return false;
@@ -144,7 +141,7 @@ void Data::onFinished(QNetworkReply *)
     {
         QByteArray bytes = m_reply->readAll();
         QString data = QString::fromUtf8(bytes);
-        qDebug()<< data;
+        // qDebug()<< data;
         // 执行解析
         parse(data);
     }

@@ -6,10 +6,7 @@
 #include <QNetworkReply>
 #include <QEventLoop>
 #include <QSslSocket>
-#include <QJsonDocument>
 #include <QJsonArray>
-#include <QJsonObject>
-#include <QJsonValue>
 
 
 // BTC_USDT的历史数据API接口
@@ -28,11 +25,11 @@ public:
     // 收盘价
     double close;
     // 交易量-张
-    double volume;
+    QString volume;
     // 交易量-币
-    double volCcy;
+    QString volCcy;
     // 交易量-计价货币
-    double volCcyQuote;
+    QString volCcyQuote;
 };
 
 struct AUDHUF{

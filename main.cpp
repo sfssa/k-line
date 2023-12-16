@@ -12,9 +12,9 @@ void test_timestmapToReadableTime(){
 }
 
 void test_DatabaseHandler(){
-    // DatabaseHandler::GetInstance()->GetInstance()->createTable("BTCUSDT");
-    std::vector<Point> arr;
-    DatabaseHandler::GetInstance()->GetInstance()->getAUDHUFHistoryData(arr);
+    DatabaseHandler::GetInstance()->createTable("btcusdt");
+    // std::vector<Point> arr;
+    // DatabaseHandler::GetInstance()->getAUDHUFHistoryData(arr);
 }
 
 void test_parse(){
@@ -32,9 +32,9 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     // MainWindow w;
     // w.show();
-    // test_DatabaseHandler();
+    test_DatabaseHandler();
     // test_timestmapToReadableTime();
     // test_requestHistoricalData();
-    test_parse();
+    // test_parse();
     return a.exec();
 }

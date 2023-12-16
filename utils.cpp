@@ -22,3 +22,30 @@ size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     buffer->append(static_cast<char *>(contents), totalSize);
     return totalSize;
 }
+
+void showAllData(const QVector<MarketData> &arr)
+{
+    qDebug() << "begin";
+    for(const auto& i : arr){
+        qDebug() << i.timestamp;
+        qDebug() << i.open;
+        qDebug() << i.high;
+        qDebug() << i.low;
+        qDebug() << i.close;
+        qDebug() << i.volume;
+        qDebug() << i.volCcy;
+        qDebug() << i.volCcyQuote;
+    }
+    qDebug() << "end";
+}
+
+double strToDouble(QString &str)
+{
+    bool flag;
+    double value = str.toDouble(&flag);
+    if(flag){
+        QString formattedValue = QString::number(value, 'g', 15);
+        return value;
+    }
+    return -1;
+}

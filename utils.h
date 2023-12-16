@@ -12,4 +12,7 @@
 std::string timestmapToReadableTime(uint64_t timestmap);
 // libcurl库请求访问的回调函数
 size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp);
+// 输出QVector内的内容
+void showAllData(const QVector<MarketData>& arr);
+double strToDouble(QString& str);
 #endif // UTILS_H
