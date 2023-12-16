@@ -15,3 +15,10 @@ void parse(std::vector<MarketData>& arr)
 {
 
 }
+
+size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp) {
+    QByteArray *buffer = static_cast<QByteArray *>(userp);
+    size_t totalSize = size * nmemb;
+    buffer->append(static_cast<char *>(contents), totalSize);
+    return totalSize;
+}

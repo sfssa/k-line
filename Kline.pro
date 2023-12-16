@@ -29,15 +29,13 @@ SOURCES += \
         mainwindow.cpp \
     databasehandler.cpp \
     utils.cpp \
-    data.cpp \
-    klinedrawer.cpp
+    data.cpp
 
 HEADERS += \
         mainwindow.h \
     databasehandler.h \
     utils.h \
-    data.h \
-    klinedrawer.h
+    data.h
 
 FORMS += \
         mainwindow.ui
@@ -47,6 +45,5 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-#INCLUDEPATH += D:/Qt/projects/Kline/libcurl/include
-#LIBS += -LD:/Qt/projects/Kline/libcurl/lib -lcurl_a_debug
+
 

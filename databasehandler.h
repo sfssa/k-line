@@ -15,7 +15,7 @@ public:
     ~DatabaseHandler();
     // 创建数据库表
     bool createTable(const QString& instid);
-    void getAUDHUFHistoryData(std::vector<AUDHUF>& arr);
+    void getAUDHUFHistoryData(std::vector<Point>& arr);
 private:
     // 构造函数私有化，使用单例模式
     DatabaseHandler();

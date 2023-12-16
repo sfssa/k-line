@@ -5,6 +5,7 @@
 #include <QNetworkRequest>
 #include <QNetworkReply>
 #include <QEventLoop>
+#include <QSslSocket>
 
 // BTC_USDT的历史数据API接口
 const QString BTC_USDT_HISTORY_DATA_API = "https://www.okx.com/api/v5/market/history-candles?instId=BTC-USDT";
@@ -44,6 +45,12 @@ struct AUDHUF{
     float close;
 };
 
+struct Point{
+    // 横坐标是时间间隔(1min)
+    QString xTime;
+    // 纵坐标是收盘价
+    float yClose;
+};
 
 class Data : public QObject
 {
@@ -54,7 +61,14 @@ public:
     void requestHistoricalData();
     bool parse(std::vector<MarketData>& arr);
 public slots:
+    void finishedSlot(QNetworkReply*);
+    void onFinished();
+    void onError(QNetworkReply::NetworkError errorCode);
+public slots:
 private:
+    QNetworkAccessManager *m_NetManger;
+    QNetworkReply* m_Reply;
+
 };
 
 

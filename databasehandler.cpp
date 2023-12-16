@@ -59,7 +59,7 @@ bool DatabaseHandler::createTable(const QString &instid)
     }
 }
 
-void DatabaseHandler::getAUDHUFHistoryData(std::vector<AUDHUF> &arr)
+void DatabaseHandler::getAUDHUFHistoryData(std::vector<Point> &arr)
 {
     QSqlQuery query;
     // 提前预留空间
@@ -67,15 +67,13 @@ void DatabaseHandler::getAUDHUFHistoryData(std::vector<AUDHUF> &arr)
     QString queryString = "SELECT * FROM audhuf";
     if (query.exec(queryString)) {
         while (query.next()) {
-            AUDHUF temp;
-            temp.timestamp = query.value("time").toString();
-            temp.high = query.value("high").toFloat();
-            temp.open = query.value("open").toFloat();
-            temp.close = query.value("close").toFloat();
-            temp.low = query.value("low").toFloat();
+            Point temp;
+            temp.xTime = query.value("time").toString();
+            temp.yClose = query.value("close").toFloat();
             arr.emplace_back(temp);
         }
+        qDebug() << "query successfully";
     } else {
-        qDebug() << "Query failed:" << query.lastError().text();
+        qDebug() << "query failed:" << query.lastError().text();
     }
 }

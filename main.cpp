@@ -13,7 +13,7 @@ void test_timestmapToReadableTime(){
 
 void test_DatabaseHandler(){
     // DatabaseHandler::GetInstance()->GetInstance()->createTable("BTCUSDT");
-    std::vector<AUDHUF> arr;
+    std::vector<Point> arr;
     DatabaseHandler::GetInstance()->GetInstance()->getAUDHUFHistoryData(arr);
 }
 
@@ -56,8 +56,7 @@ void test_parse(){
 
 void test_requestHistoricalData(){
     Data* data = new Data();
-    data->requestHistoricalData();
-    // qDebug() << "===>" << QSslSocket::sslLibraryBuildVersionString();
+    // data->testCurl();
 }
 
 int main(int argc, char *argv[])
@@ -65,8 +64,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    test_DatabaseHandler();
+    // test_DatabaseHandler();
     // test_timestmapToReadableTime();
-    // test_requestHistoricalData();
+    test_requestHistoricalData();
     return a.exec();
 }
