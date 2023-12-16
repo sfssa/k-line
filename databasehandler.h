@@ -22,6 +22,8 @@ public:
     bool insertIntoDb(QVector<MarketData>& arr);
     // 获得数据库连接对象
     QSqlDatabase& getDB();
+    // 提取某个instid的数据
+    QVector<MarketData>* getInstidHistoricalData(const QString& instid);
 private:
     // 构造函数私有化，使用单例模式
     DatabaseHandler();

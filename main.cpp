@@ -12,9 +12,10 @@ void test_timestmapToReadableTime(){
 }
 
 void test_DatabaseHandler(){
-    DatabaseHandler::GetInstance()->createTable("btcusdt");
+    // DatabaseHandler::GetInstance()->createTable("btcusdt");
     // std::vector<Point> arr;
     // DatabaseHandler::GetInstance()->getAUDHUFHistoryData(arr);
+    DatabaseHandler::GetInstance()->getInstidHistoricalData("btcusdt");
 }
 
 void test_parse(){
@@ -36,7 +37,8 @@ int main(int argc, char *argv[])
     // w.show();
     // test_DatabaseHandler();
     // test_timestmapToReadableTime();
-    test_requestHistoricalData();
+    // test_requestHistoricalData();
     // test_parse();
+    test_DatabaseHandler();
     return a.exec();
 }

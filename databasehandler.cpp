@@ -109,3 +109,37 @@ QSqlDatabase &DatabaseHandler::getDB()
 {
     return m_db;
 }
+
+QVector<MarketData> *DatabaseHandler::getInstidHistoricalData(const QString &instid)
+{
+    QVector<MarketData>* data = new QVector<MarketData>();
+
+    QSqlQuery query;
+    QString select = QString(("select * from %1")).arg(instid);
+    qDebug() << select;
+    if(query.exec(select)){
+        qDebug() << "select successfully";
+        // 将数据插入到容器中
+        int count = 1;
+        while(query.next()){
+            qDebug() << count;
+            ++count;
+            MarketData tmp;
+            tmp.timestamp = query.value(0).toString();
+            tmp.open = query.value(1).toDouble();
+            tmp.high = query.value(2).toDouble();
+            tmp.low = query.value(3).toDouble();
+            tmp.close = query.value(4).toDouble();
+            tmp.volume = query.value(5).toString();
+            tmp.volCcy = query.value(6).toString();
+            tmp.volCcyQuote = query.value(7).toString();
+            data->push_back(tmp);
+        }
+    }else{
+        qDebug() << "error in select: " << query.lastError().text();
+        return nullptr;
+    }
+
+    return data;
+
+}
