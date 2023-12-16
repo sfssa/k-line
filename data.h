@@ -6,6 +6,11 @@
 #include <QNetworkReply>
 #include <QEventLoop>
 #include <QSslSocket>
+#include <QJsonDocument>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonValue>
+
 
 // BTC_USDT的历史数据API接口
 const QString BTC_USDT_HISTORY_DATA_API = "https://www.okx.com/api/v5/market/history-candles?instId=BTC-USDT";
@@ -13,7 +18,7 @@ const QString BTC_USDT_HISTORY_DATA_API = "https://www.okx.com/api/v5/market/his
 struct MarketData{
 public:
     // 时间戳
-    std::string timestamp;
+    QString timestamp;
     // 开盘价
     double open;
     // 最高价
@@ -23,13 +28,11 @@ public:
     // 收盘价
     double close;
     // 交易量-张
-    std::string volume;
+    double volume;
     // 交易量-币
-    std::string volCcy;
+    double volCcy;
     // 交易量-计价货币
-    std::string volCcyQuote;
-    // 是否完结
-    std::string confitm;
+    double volCcyQuote;
 };
 
 struct AUDHUF{
@@ -59,16 +62,15 @@ public:
     Data();
     ~Data();
     void requestHistoricalData();
-    bool parse(std::vector<MarketData>& arr);
+    // 解析获得的历史数据
+    bool parse(QString& data);
 public slots:
-    void finishedSlot(QNetworkReply*);
-    void onFinished();
-    void onError(QNetworkReply::NetworkError errorCode);
+    void onFinished(QNetworkReply *);
 public slots:
 private:
-    QNetworkAccessManager *m_NetManger;
-    QNetworkReply* m_Reply;
-
+    QNetworkAccessManager *m_netManger;
+    QNetworkReply* m_reply;
+    QVector<Point>* m_arr;
 };
 
 

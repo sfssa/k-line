@@ -10,8 +10,6 @@
 
 // 将时间戳转换成时间
 std::string timestmapToReadableTime(uint64_t timestmap);
-// 解析获得的历史数据
-void parse(std::vector<MarketData>& arr);
 // libcurl库请求访问的回调函数
 size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp);
 #endif // UTILS_H

@@ -18,40 +18,8 @@ void test_DatabaseHandler(){
 }
 
 void test_parse(){
-    // R"()"禁止括号内的所有转义字符
-    std::string beforeParse = R"(
-        {
-            "code":"0",
-            "msg":"",
-            "data":[
-             [
-                "1597026383085",
-                "3.721",
-                "3.743",
-                "3.677",
-                "3.708",
-                "8422410",
-                "22698348.04828491",
-                "12698348.04828491",
-                "1"
-            ],
-            [
-                "1597026383085",
-                "3.731",
-                "3.799",
-                "3.494",
-                "3.72",
-                "24912403",
-                "67632347.24399722",
-                "37632347.24399722",
-                "1"
-            ]
-            ]
-        }
-    )";
     // 进行解析
-
-    // 输出解析后的数据
+    Data* d = new Data();
 }
 
 void test_requestHistoricalData(){
@@ -62,10 +30,11 @@ void test_requestHistoricalData(){
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+    // MainWindow w;
+    // w.show();
     // test_DatabaseHandler();
     // test_timestmapToReadableTime();
-    test_requestHistoricalData();
+    // test_requestHistoricalData();
+    test_parse();
     return a.exec();
 }

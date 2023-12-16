@@ -11,7 +11,7 @@ std::string timestmapToReadableTime(uint64_t timestmap)
     return ss.str();
 }
 
-void parse(std::vector<MarketData>& arr)
+void parse(std::vector<MarketData>& arr, QString& data)
 {
 
 }
