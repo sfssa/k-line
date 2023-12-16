@@ -14,5 +14,6 @@ std::string timestmapToReadableTime(uint64_t timestmap);
 size_t writeCallback(void *contents, size_t size, size_t nmemb, void *userp);
 // 输出QVector内的内容
 void showAllData(const QVector<MarketData>& arr);
+// 将字符串类型转换成double类型
 double strToDouble(QString& str);
 #endif // UTILS_H

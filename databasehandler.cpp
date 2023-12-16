@@ -8,8 +8,8 @@ DatabaseHandler *DatabaseHandler::GetInstance()
 
 DatabaseHandler::~DatabaseHandler()
 {
-    db.close();
-    QSqlDatabase::removeDatabase(db.connectionName());
+    m_db.close();
+    QSqlDatabase::removeDatabase(m_db.connectionName());
 }
 
 DatabaseHandler::DatabaseHandler()
@@ -19,10 +19,10 @@ DatabaseHandler::DatabaseHandler()
 
 bool DatabaseHandler::init()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("kline.sqlite");
+    m_db = QSqlDatabase::addDatabase("QSQLITE");
+    m_db.setDatabaseName("kline.sqlite");
 
-    if (!db.open()) {
+    if (!m_db.open()) {
         qDebug() << "connect sqlite3 failed";
         return false;
     }else{
@@ -41,8 +41,7 @@ bool DatabaseHandler::createTable(const QString &instid)
                                            "c double,"
                                            "vol varchar(64),"
                                            "volCcy varchar(64),"
-                                           "volCCyQuote varchar(64),"
-                                           "confirm int)").arg(instid);
+                                           "volCCyQuote varchar(64))").arg(instid);
     // qDebug() << createTableQuery;
     if(query.exec(createTableQuery)){
         qDebug() << "table created successfully";
@@ -70,4 +69,43 @@ void DatabaseHandler::getAUDHUFHistoryData(std::vector<Point> &arr)
     } else {
         qDebug() << "query failed:" << query.lastError().text();
     }
+}
+
+bool DatabaseHandler::insertIntoDb(QVector<MarketData> &arr)
+{
+    QSqlQuery query(m_db);
+    if(!m_db.transaction()){
+        qDebug() << "transaction start failed";
+        return false;
+    }
+    QString insertSql = "insert into btcusdt (ts, o, h, l, c, vol, volCcy, volCCyQuote) "
+                            "values (:timestamp, :open, :high, :low, :close, :volume, :volCcy, :volCcyQuote)";
+
+    for(const MarketData& data : arr){
+        query.prepare(insertSql);
+        query.bindValue(":timestamp", data.timestamp);
+        query.bindValue(":open", data.open);
+        query.bindValue(":high", data.high);
+        query.bindValue(":low", data.low);
+        query.bindValue(":close", data.close);
+        query.bindValue(":volume", data.volume);
+        query.bindValue(":volCcy", data.volCcy);
+        query.bindValue(":volCcyQuote", data.volCcyQuote);
+        if(!query.exec()){
+            qDebug() << "insert failed: " << query.lastError().text();
+            m_db.rollback();
+            return false;
+        }
+    }
+    if(!m_db.commit()){
+        qDebug() << "transaction commit failed";
+        return false;
+    }
+    qDebug() << "insert successful";
+    return true;
+}
+
+QSqlDatabase &DatabaseHandler::getDB()
+{
+    return m_db;
 }

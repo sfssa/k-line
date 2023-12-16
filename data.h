@@ -1,5 +1,6 @@
 #ifndef DATA_H
 #define DATA_H
+
 #include <QString>
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
@@ -7,7 +8,7 @@
 #include <QEventLoop>
 #include <QSslSocket>
 #include <QJsonArray>
-
+#include "data.h"
 
 // BTC_USDT的历史数据API接口
 const QString BTC_USDT_HISTORY_DATA_API = "https://www.okx.com/api/v5/market/history-candles?instId=BTC-USDT";
@@ -67,8 +68,9 @@ public slots:
 private:
     QNetworkAccessManager *m_netManger;
     QNetworkReply* m_reply;
-    QVector<Point>* m_arr;
+    // QVector<Point>* m_arr;
+    QVector<MarketData>* m_arr;
 };
 
 
-#endif // DATA_H
+#endif //DATA_H

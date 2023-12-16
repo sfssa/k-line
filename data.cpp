@@ -1,10 +1,10 @@
 #include "data.h"
 #include "utils.h"
+#include "databasehandler.h"
 
 Data::Data()
 {
-    requestHistoricalData();
-    m_arr = new QVector<Point>();
+    m_arr = new QVector<MarketData>();
     m_arr->reserve(100);
 }
 
@@ -27,9 +27,6 @@ void Data::requestHistoricalData()
 
 bool Data::parse(QString& data)
 {
-    // qDebug() << "-------------------------------";
-    QVector<MarketData> arr;
-    arr.reserve(100);
     // 解析
     int cur = 0;
     while(data[cur] != '['){
@@ -50,6 +47,7 @@ bool Data::parse(QString& data)
                 ++end;
             }
             timestamp = data.mid(begin + 1, end - begin -1);
+            // qDebug() << timestamp;
             temp.timestamp = timestamp;
             // 解析开盘价
             QString openPrice;
@@ -69,6 +67,7 @@ bool Data::parse(QString& data)
             }
             highPrice = data.mid(begin + 1, end - begin - 1);
             temp.high = highPrice.toDouble();
+            // qDebug() << highPrice;
             // 解析最低价
             QString lowPrice;
             begin = end + 2;
@@ -78,6 +77,7 @@ bool Data::parse(QString& data)
             }
             lowPrice = data.mid(begin + 1, end - begin - 1);
             temp.low = lowPrice.toDouble();
+            // qDebug() << lowPrice;
             // 解析收盘价
             QString closePrice;
             begin = end + 2;
@@ -87,6 +87,7 @@ bool Data::parse(QString& data)
             }
             closePrice = data.mid(begin + 1, end - begin - 1);
             temp.close = closePrice.toDouble();
+            // qDebug() << closePrice;
             // 交易量（张）
             QString vol;
             begin = end + 2;
@@ -97,6 +98,7 @@ bool Data::parse(QString& data)
 
             vol = data.mid(begin + 1, end - begin - 1);
             temp.volume = vol;
+            // qDebug() << vol;
             // 交易量（币）
             QString volCcy;
             begin = end + 2;
@@ -106,6 +108,7 @@ bool Data::parse(QString& data)
             }
             volCcy = data.mid(begin + 1, end - begin - 1);
             temp.volCcy = volCcy;
+            // qDebug() << volCcy;
             // 交易量（计价货币）
             QString volCcyQuote;
             begin = end + 2;
@@ -115,7 +118,8 @@ bool Data::parse(QString& data)
             }
             volCcyQuote = data.mid(begin + 1, end - begin - 1);
             temp.volCcyQuote = volCcyQuote;
-            arr.push_back(temp);
+            m_arr->push_back(temp);
+            // qDebug() << volCcyQuote;
             // 解析下一个还是结束解析
             cur = end + 5;
             if(data[cur + 1] == ','){
@@ -126,6 +130,7 @@ bool Data::parse(QString& data)
             }
         }
         // showAllData(arr);
+        DatabaseHandler::GetInstance()->insertIntoDb(*m_arr);
     }else{
         qDebug() << "error in parse function";
         return false;
