@@ -41,9 +41,9 @@ private:
     // 设置窗口背景颜色
     void setBackgroundColor();
     // 绘制横线
-    void drawRowLines(QPainter* painter);
+    void drawRowLines(QPainter* painter, const QRectF &gridRect);
     // 绘制竖线
-    void drawColLines(QPainter* painter);
+    void drawColLines(QPainter* painter, const QRectF &gridRect);
 private:
     // UI界面
     Ui::MainWindow *ui;

@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_darkPen = QPen(QColor(222, 222, 222));
     m_darkPen.setWidth(2);
 
-        this->setBackgroundColor();
+    setBackgroundColor();
 }
 
 MainWindow::~MainWindow()
@@ -62,8 +62,11 @@ void MainWindow::paintEvent(QPaintEvent *event)
 //    }
     QWidget::paintEvent(event);
     QPainter painter(this);
-    drawRowLines(&painter);
-    drawColLines(&painter);
+    QBrush backgroundBrush(QColor(250, 250, 250));
+    painter.fillRect(rect(), backgroundBrush);
+    QRectF rect(100, 100, 900, 500);
+    drawRowLines(&painter, rect);
+    drawColLines(&painter, rect);
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event)
@@ -102,65 +105,55 @@ void MainWindow::setBackgroundColor()
     setAutoFillBackground(true);
 }
 
-void MainWindow::drawRowLines(QPainter *painter)
+void MainWindow::drawRowLines(QPainter *painter, const QRectF &gridRect)
 {
     int lineCount = 0;
-    float biggerY = m_startY;
-    float smallerY = m_startY;
-
-    painter->setPen(this->m_darkPen);
-
+    float biggerY = gridRect.top();
+    // float smallerY = gridRect.bottom();
+    painter->setPen(m_darkPen);
     while (true) {
-        painter->drawLine(QPointF(0.0, biggerY), QPointF(this->width(), biggerY));
-        painter->drawLine(QPointF(0.0, smallerY), QPointF(this->width(), smallerY));
+        painter->drawLine(QPointF(gridRect.left(), biggerY), QPointF(gridRect.right(), biggerY));
+        // painter->drawLine(QPointF(gridRect.left(), smallerY), QPointF(gridRect.right(), smallerY));
 
         biggerY += m_gap;
-        smallerY -= m_gap;
-        if (smallerY <= 0 || biggerY >= this->height()) {
+        // smallerY -= m_gap;
+        if (biggerY >= gridRect.bottom()) {
             break;
         }
-
-        // 每间隔一定数量的线，就画一条粗一点的横线
-        lineCount += 1;
+        ++lineCount;
         if (lineCount == 10) {
             painter->setPen(m_darkPen);
             lineCount = 0;
-        }
-        else {
+        } else {
             painter->setPen(m_lightPen);
         }
     }
 }
 
-void MainWindow::drawColLines(QPainter *painter)
+void MainWindow::drawColLines(QPainter *painter, const QRectF &gridRect)
 {
     int lineCount = 0;
-    float biggerX = m_startX;
-    float smallerX = m_startX;
-
+    float biggerX = gridRect.left();
+    // float smallerX = gridRect.right();
     painter->setPen(m_darkPen);
-
     while (true) {
-        painter->drawLine(QPointF(biggerX, 0.0), QPointF(biggerX, this->height()));
-        painter->drawLine(QPointF(smallerX, 0.0), QPointF(smallerX, this->height()));
+        painter->drawLine(QPointF(biggerX, gridRect.top()), QPointF(biggerX, gridRect.bottom()));
+        // painter->drawLine(QPointF(smallerX, gridRect.top()), QPointF(smallerX, gridRect.bottom()));
 
         biggerX += m_gap;
-        smallerX -= m_gap;
-        if (smallerX <= 0 || biggerX >= this->width()) {
+        // smallerX -= m_gap;
+        if (biggerX >= gridRect.right()) {
             break;
         }
-
-        // 每间隔一定数量的线，就画一条粗一点的竖线
-        lineCount += 1;
+        ++lineCount;
         if (lineCount == 10) {
             painter->setPen(m_darkPen);
             lineCount = 0;
-        }
-        else {
+        } else {
             painter->setPen(m_lightPen);
         }
     }
-
 }
+
 
 
