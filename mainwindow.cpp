@@ -133,16 +133,20 @@ void MainWindow::drawRowLines(QPainter *painter, const QRectF &gridRect)
 void MainWindow::drawColLines(QPainter *painter, const QRectF &gridRect)
 {
     int lineCount = 0;
-    float biggerX = gridRect.left();
+    float left = gridRect.left();
     // float smallerX = gridRect.right();
     painter->setPen(m_darkPen);
     while (true) {
-        painter->drawLine(QPointF(biggerX, gridRect.top()), QPointF(biggerX, gridRect.bottom()));
+        painter->drawLine(QPointF(left, gridRect.top()), QPointF(left, gridRect.bottom()));
         // painter->drawLine(QPointF(smallerX, gridRect.top()), QPointF(smallerX, gridRect.bottom()));
-
-        biggerX += m_gap;
+        // 添加坐标
+//        int x = 0;
+//        QString text = QString::number(x++);
+//        QRectF textRect(x - 25, gridRect.bottom() + 5, 50, 20);
+//        painter->drawText(textRect, Qt::AlignHCenter, text);
+        left += m_gap;
         // smallerX -= m_gap;
-        if (biggerX >= gridRect.right()) {
+        if (left >= gridRect.right()) {
             break;
         }
         ++lineCount;

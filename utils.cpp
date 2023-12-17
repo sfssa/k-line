@@ -1,14 +1,14 @@
 #include "utils.h"
 
 
-std::string timestmapToReadableTime(uint64_t timestmap)
+QString timestmapToReadableTime(uint64_t timestmap)
 {
-    auto timePoint = std::chrono::system_clock::time_point(std::chrono::seconds(timestmap));
+    auto timePoint = std::chrono::system_clock::time_point(std::chrono::milliseconds(timestmap));
     auto tm = std::chrono::system_clock::to_time_t((timePoint));
     std::tm* timeInfo = std::localtime(&tm);
     std::stringstream ss;
     ss << std::put_time(timeInfo, "%Y-%m-%d %H:%M:%S");
-    return ss.str();
+    return QString::fromStdString(ss.str());
 }
 
 void parse(std::vector<MarketData>& arr, QString& data)
@@ -48,4 +48,27 @@ double strToDouble(QString &str)
         return value;
     }
     return -1;
+}
+
+void getAverage()
+{
+
+}
+
+void getPointsByHistorialData(QVector<Point>& point)
+{
+    point.reserve(100);
+    QVector<MarketData>* arr = DatabaseHandler::GetInstance()->getInstidHistoricalData("btcusdt");
+    for(const auto& i : *arr){
+        Point p;
+
+        QString time = timestmapToReadableTime(i.timestamp.toLongLong());
+        qDebug() << time;
+        p.xTime = time;
+        p.yClose = i.close;
+        point.push_back(p);
+    }
+    for(const auto& i : point){
+        qDebug() << i.xTime << "-" << i.yClose;
+    }
 }

@@ -115,7 +115,7 @@ QVector<MarketData> *DatabaseHandler::getInstidHistoricalData(const QString &ins
     QVector<MarketData>* data = new QVector<MarketData>();
 
     QSqlQuery query;
-    QString select = QString(("select * from %1")).arg(instid);
+    QString select = QString(("select * from %1 by ts asc")).arg(instid);
     qDebug() << select;
     if(query.exec(select)){
         qDebug() << "select successfully";
