@@ -33,12 +33,12 @@ void test_requestHistoricalData(){
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    // MainWindow w;
-    // w.show();
+    MainWindow w;
+    w.show();
     // test_DatabaseHandler();
     // test_timestmapToReadableTime();
     // test_requestHistoricalData();
     // test_parse();
-    test_DatabaseHandler();
+    // test_DatabaseHandler();
     return a.exec();
 }
