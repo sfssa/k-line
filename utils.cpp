@@ -63,12 +63,12 @@ void getPointsByHistorialData(QVector<Point>& point)
         Point p;
 
         QString time = timestmapToReadableTime(i.timestamp.toLongLong());
-        qDebug() << time;
+        // qDebug() << time;
         p.xTime = time;
         p.yClose = i.close;
         point.push_back(p);
     }
-    for(const auto& i : point){
-        qDebug() << i.xTime << "-" << i.yClose;
-    }
+//    for(const auto& i : point){
+//        qDebug() << i.xTime << "-" << i.yClose;
+//    }
 }

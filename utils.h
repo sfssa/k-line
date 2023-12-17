@@ -21,4 +21,6 @@ double strToDouble(QString& str);
 void getAverage();
 // 获得行情数据的点
 void getPointsByHistorialData(QVector<Point>& point);
+// 获得纵坐标区间
+
 #endif // UTILS_H

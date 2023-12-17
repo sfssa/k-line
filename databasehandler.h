@@ -24,6 +24,10 @@ public:
     QSqlDatabase& getDB();
     // 提取某个instid的数据
     QVector<MarketData>* getInstidHistoricalData(const QString& instid);
+    // 返回instid的最大收盘价
+    double getMinCloseOfInstid(const QString& instid);
+    // 返回instid的最小收盘价
+    double getMaxCloseOfInstid(const QString& instid);
 private:
     // 构造函数私有化，使用单例模式
     DatabaseHandler();

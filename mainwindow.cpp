@@ -6,8 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    // drawBackground();
-
     m_minGap = 10;
     m_maxGap = 50;
     m_gap = (m_minGap + m_maxGap) / 2;
@@ -25,7 +23,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::drawKLine(std::vector<Point> &points)
+void MainWindow::drawKLine(QVector<Point>& points)
 {
 
 }
@@ -42,24 +40,7 @@ int MainWindow::getYMargin()
 
 void MainWindow::paintEvent(QPaintEvent *event)
 {
-//    QPainter painter(this);
-//    painter.setPen(QPen(Qt::black, 2));
-//    painter.drawLine(50, 600, 50, 50);
-//    painter.drawLine(25, 75, 50, 50);
-//    painter.drawLine(75, 75, 50, 50);
-//    painter.drawLine(50, 600, 1250, 600);
-//    painter.drawLine(1225, 575, 1250, 600);
-//    painter.drawLine(1225, 625, 1250, 600);
-//    int x = 50;
-//    int y = 600;
-//    int scope = 100;
-//    for(int i = 1; i <= 11; ++i){
-//        painter.drawLine(x + i * scope, 600, x + i * scope, 590);
-//    }
-
-//    for( int i = 1; i <= 5; ++i){
-//        painter.drawLine(50, 600 - i * scope, 60, 600 - i * scope);
-//    }
+    // 画出网格背景图
     QWidget::paintEvent(event);
     QPainter painter(this);
     QBrush backgroundBrush(QColor(250, 250, 250));
@@ -71,29 +52,30 @@ void MainWindow::paintEvent(QPaintEvent *event)
 
 void MainWindow::wheelEvent(QWheelEvent *event)
 {
-    QWidget::wheelEvent(event);
-    if (event->angleDelta().y() > 0) {
-        m_gap += 0.1;
-    }
-    else if (event->angleDelta().y() < 0) {
-        m_gap -= 0.1;
-    }
+//    QWidget::wheelEvent(event);
+//    if (event->angleDelta().y() > 0) {
+//        m_gap += 0.1;
+//    }
+//    else if (event->angleDelta().y() < 0) {
+//        m_gap -= 0.1;
+//    }
 
-    if (m_gap >= m_maxGap) {
-        m_gap = m_minGap;
-    }
-    else if (m_gap <= m_minGap) {
-        m_gap = m_maxGap;
-    }
+//    if (m_gap >= m_maxGap) {
+//        m_gap = m_minGap;
+//    }
+//    else if (m_gap <= m_minGap) {
+//        m_gap = m_maxGap;
+//    }
 
-    this->update();
+//    this->update();
+    event->ignore();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     QWidget::resizeEvent(event);
-    m_startX = this->width() / 2;
-    m_startY = this->height() / 2;
+    m_startX = width() / 2;
+    m_startY = height() / 2;
     update();
 }
 
@@ -109,14 +91,10 @@ void MainWindow::drawRowLines(QPainter *painter, const QRectF &gridRect)
 {
     int lineCount = 0;
     float biggerY = gridRect.top();
-    // float smallerY = gridRect.bottom();
     painter->setPen(m_darkPen);
     while (true) {
         painter->drawLine(QPointF(gridRect.left(), biggerY), QPointF(gridRect.right(), biggerY));
-        // painter->drawLine(QPointF(gridRect.left(), smallerY), QPointF(gridRect.right(), smallerY));
-
         biggerY += m_gap;
-        // smallerY -= m_gap;
         if (biggerY >= gridRect.bottom()) {
             break;
         }
@@ -134,25 +112,25 @@ void MainWindow::drawColLines(QPainter *painter, const QRectF &gridRect)
 {
     int lineCount = 0;
     float left = gridRect.left();
-    // float smallerX = gridRect.right();
     painter->setPen(m_darkPen);
     while (true) {
+        painter->setPen(QColor(Qt::black));
+        QString xValue = QString::number(lineCount * 1);
+        QFontMetrics fm(painter->font());
+        int textWidth = fm.width(xValue);
+        painter->drawText(QPointF(left - textWidth / 2, gridRect.bottom() + 10), xValue);
+
+        painter->setPen(m_lightPen);
         painter->drawLine(QPointF(left, gridRect.top()), QPointF(left, gridRect.bottom()));
-        // painter->drawLine(QPointF(smallerX, gridRect.top()), QPointF(smallerX, gridRect.bottom()));
-        // 添加坐标
-//        int x = 0;
-//        QString text = QString::number(x++);
-//        QRectF textRect(x - 25, gridRect.bottom() + 5, 50, 20);
-//        painter->drawText(textRect, Qt::AlignHCenter, text);
         left += m_gap;
-        // smallerX -= m_gap;
+
         if (left >= gridRect.right()) {
             break;
         }
         ++lineCount;
-        if (lineCount == 10) {
+        if (lineCount %10 == 0) {
             painter->setPen(m_darkPen);
-            lineCount = 0;
+            // lineCount = 0;
         } else {
             painter->setPen(m_lightPen);
         }

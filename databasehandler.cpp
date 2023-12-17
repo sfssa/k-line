@@ -115,15 +115,15 @@ QVector<MarketData> *DatabaseHandler::getInstidHistoricalData(const QString &ins
     QVector<MarketData>* data = new QVector<MarketData>();
 
     QSqlQuery query;
-    QString select = QString(("select * from %1 by ts asc")).arg(instid);
-    qDebug() << select;
+    QString select = QString(("select distinct * from %1 order by ts asc limit 30")).arg(instid);
+    // qDebug() << select;
     if(query.exec(select)){
         qDebug() << "select successfully";
         // 将数据插入到容器中
-        int count = 1;
+        // int count = 1;
         while(query.next()){
-            qDebug() << count;
-            ++count;
+            // qDebug() << count;
+            // ++count;
             MarketData tmp;
             tmp.timestamp = query.value(0).toString();
             tmp.open = query.value(1).toDouble();
@@ -142,4 +142,40 @@ QVector<MarketData> *DatabaseHandler::getInstidHistoricalData(const QString &ins
 
     return data;
 
+}
+
+double DatabaseHandler::getMinCloseOfInstid(const QString &instid)
+{
+    QSqlQuery query;
+    QString select = QString("select min(c) from %1").arg(instid);
+    if(!query.exec(select)){
+        qDebug() << "error in getMinCloseOfInstid";
+        qDebug() <<query.lastError().text();
+        return 0.0;
+    }else{
+        if(query.next()){
+            qDebug() << query.value(0).toDouble();
+            return query.value(0).toDouble();
+        }else{
+            return 0.0;
+        }
+    }
+}
+
+double DatabaseHandler::getMaxCloseOfInstid(const QString &instid)
+{
+    QSqlQuery query;
+    QString select = QString("select max(c) from %1").arg(instid);
+    if(!query.exec(select)){
+        qDebug() << "error in getMaxCloseOfInstid";
+        qDebug() << query.lastError().text();
+        return 0.0;
+    }else{
+        if(query.next()){
+            qDebug() << query.value(0).toDouble();
+            return query.value(0).toDouble();
+        }else{
+            return 0.0;
+        }
+    }
 }

@@ -10,6 +10,7 @@
 #include <QWheelEvent>
 #include <QPainter>
 #include "data.h"
+#include "utils.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,7 +26,7 @@ public:
     // 析构函数
     ~MainWindow();
     // 根据数据画K线
-    void drawKLine(std::vector<Point>& points);
+    void drawKLine(QVector<Point>& points);
     // 计算有多少个横坐标值
     int getXMargin();
     // 计算有多少个纵坐标值

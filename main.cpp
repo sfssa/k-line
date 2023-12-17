@@ -14,7 +14,9 @@ void test_DatabaseHandler(){
     // DatabaseHandler::GetInstance()->createTable("btcusdt");
     // std::vector<Point> arr;
     // DatabaseHandler::GetInstance()->getAUDHUFHistoryData(arr);
-    DatabaseHandler::GetInstance()->getInstidHistoricalData("btcusdt");
+    // DatabaseHandler::GetInstance()->getInstidHistoricalData("btcusdt");
+    DatabaseHandler::GetInstance()->getMinCloseOfInstid("btcusdt");
+    DatabaseHandler::GetInstance()->getMaxCloseOfInstid("btcusdt");
 }
 
 void test_utils(){
@@ -25,6 +27,10 @@ void test_utils(){
 void test_parse(){
     // 进行解析
     Data* d = new Data();
+}
+
+void test_draw(){
+
 }
 
 void test_requestHistoricalData(){
@@ -39,12 +45,15 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
     w.show();
-    // test_DatabaseHandler();
+    QVector<Point> points;
+    getPointsByHistorialData(points);
+    w.drawKLine(points);
+    test_DatabaseHandler();
     // test_timestmapToReadableTime();
     // test_requestHistoricalData();
     // test_parse();
     // test_DatabaseHandler();
-    test_utils();
+    // test_utils();
     // test_timestmapToReadableTime();
     return a.exec();
 }
